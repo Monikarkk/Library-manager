@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard - Book Library</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h2>📚 Your Book Library</h2>
+
+  <form action="/add-book" method="POST">
+    <input type="text" name="title" placeholder="Book Title" required>
+    <input type="text" name="author" placeholder="Author" required>
+    <select name="status">
+      <option value="Unread">Unread</option>
+      <option value="Read">Read</option>
+    </select>
+    <button type="submit">Add Book</button>
+  </form>
+
+  <table border="1" cellpadding="8">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% books.forEach(book => { %>
+        <tr>
+          <form action="/edit-book/<%= book.id %>" method="POST">
+            <td><input type="text" name="title" value="<%= book.title %>" required></td>
+            <td><input type="text" name="author" value="<%= book.author %>" required></td>
+            <td>
+              <select name="status">
+                <option value="Unread" <%= book.status === 'Unread' ? 'selected' : '' %>>Unread</option>
+                <option value="Read" <%= book.status === 'Read' ? 'selected' : '' %>>Read</option>
+              </select>
+            </td>
+            <td>
+              <button type="submit">Save</button>
+              <a href="/toggle-status/<%= book.id %>">Toggle</a>
+              <a href="/delete-book/<%= book.id %>" onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+          </form>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <br>
+  <a href="/logout">Logout</a>
+</body>
+</html>
